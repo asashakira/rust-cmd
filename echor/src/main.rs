@@ -12,6 +12,9 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
-
-    print!("{}{}", args.text.join(" "), if args.omit_newline { "" } else { "\n" });
+    print!(
+        "{}{}",
+        args.text.join(" "),
+        if args.omit_newline { "" } else { "\n" }
+    );
 }
