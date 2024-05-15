@@ -18,21 +18,31 @@ struct Args {
         long,
         default_value = "10",
         value_name = "LINES",
-        help = "print the first NUM lines instead of the first 10",
-        value_parser = clap::value_parser!(u64).range(1..),
+        allow_hyphen_values = true,
+        help = "print the first NUM lines instead of the first 10; with the leading '-', print all but the last NUM lines of each file",
+        value_parser = clap::value_parser!(i64),
     )]
-    lines: u64,
+    lines: i64,
 
     /// Number of bytes
     #[arg(
         short('c'),
         long,
         value_name("BYTES"),
-        help("number nonempty output lines, overrides -n"),
+        allow_hyphen_values(true),
+        help("print the first NUM bytes of each file; with the leading '-', print all but the last NUM bytes of each file"),
         conflicts_with("lines"),
-        value_parser(clap::value_parser!(u64).range(1..)),
+        value_parser(clap::value_parser!(i64)),
     )]
-    bytes: Option<u64>,
+    bytes: Option<i64>,
+}
+
+fn write_header(filename: &str, is_first_file: bool) {
+    println!(
+        "{}==> {} <==",
+        if is_first_file { "" } else { "\n" },
+        filename,
+    );
 }
 
 pub fn run() -> MyResult<()> {
@@ -43,10 +53,8 @@ pub fn run() -> MyResult<()> {
             Err(err) => eprintln!("{filename}: {err}"),
             Ok(mut file) => {
                 if num_files > 1 {
-                    println!(
-                        "{}==> {filename} <==",
-                        if file_index > 0 { "\n" } else { "" },
-                    );
+                    let is_first_file = file_index == 0;
+                    write_header(filename, is_first_file);
                 }
 
                 if let Some(num_bytes) = args.bytes {
