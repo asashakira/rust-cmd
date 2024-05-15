@@ -23,3 +23,7 @@ head -n 4 $ALL > $OUT_DIR/all.n4.out
 head -c 1 $ALL > $OUT_DIR/all.c1.out
 head -c 2 $ALL > $OUT_DIR/all.c2.out
 head -c 4 $ALL > $OUT_DIR/all.c4.out
+
+
+head -n -3 $INPUTS/twelve.txt > $OUT_DIR/twelve.txt.n-3.out
+head -c -3 $INPUTS/twelve.txt > $OUT_DIR/twelve.txt.n-3.out

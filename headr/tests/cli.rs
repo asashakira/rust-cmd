@@ -419,3 +419,14 @@ fn multiple_files_c4() -> Result<()> {
         "tests/expected/all.c4.out",
     )
 }
+
+// --------------------------------------------------
+#[test]
+fn twelve_n_negative() -> Result<()> {
+    run(&[TWELVE, "-n", "-3"], "tests/expected/twelve.txt.n-3.out")
+}
+
+#[test]
+fn twelve_c_negative() -> Result<()> {
+    run(&[TWELVE, "-c", "-3"], "tests/expected/twelve.txt.c-3.out")
+}
